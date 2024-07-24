@@ -61,10 +61,10 @@ function list_docker() {
 
     log_time "Starting Docker images and containers collection"
     echo "Docker Images:"
-    docker images || { echo "Failed to retrieve Docker images." | logger -t devopsfetch; return 1; }
+    sudo docker images || { echo "Failed to retrieve Docker images." | logger -t devopsfetch; return 1; }
     echo ""
     echo "Docker Containers:"
-    docker ps -a || { echo "Failed to retrieve Docker containers." | logger -t devopsfetch; return 1; }
+    sudo docker ps -a || { echo "Failed to retrieve Docker containers." | logger -t devopsfetch; return 1; }
     log_time "Finished Docker images and containers collection"
     print_separator
 }
