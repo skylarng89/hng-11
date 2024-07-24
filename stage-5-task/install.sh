@@ -12,12 +12,22 @@ if ! sudo apt install -y net-tools; then
 fi
 
 if ! sudo apt install -y docker.io && sudo systemctl start docker && sudo systemctl enable docker; then
-    echo "Could not install docker.io. Please try again."
+    echo "Could not install and enable Docker. Please try again."
     exit 1
 fi
 
-if ! sudo groupadd docker && sudo usermod -aG docker $USER && newgrp docker ; then
-    echo "User not added to docker group. Please try again."
+if ! sudo groupadd docker &&  && newgrp docker ; then
+    echo "docker group not created. Please try again."
+    exit 1
+fi
+
+if ! sudo usermod -aG docker $USER ; then
+    echo "The user was not added to the docker group. Please try again."
+    exit 1
+fi
+
+if ! newgrp docker ; then
+    echo "docker group not reloaded. Please try again."
     exit 1
 fi
 
