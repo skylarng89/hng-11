@@ -26,11 +26,6 @@ if ! sudo usermod -aG docker $USER ; then
     exit 1
 fi
 
-if ! newgrp docker ; then
-    echo "docker group not reloaded. Please try again."
-    exit 1
-fi
-
 # Create a systemd service file for devopsfetch
 cat << EOF | sudo tee /etc/systemd/system/devopsfetch.service > /dev/null
 [Unit]
@@ -63,5 +58,11 @@ fi
 
 if ! sudo systemctl start devopsfetch.service; then
     echo "Could not start devopsfetch service. Please try again."
+    exit 1
+fi
+
+# Reload docker group...this should always be last
+if ! newgrp docker ; then
+    echo "docker group not reloaded. Please try again."
     exit 1
 fi
