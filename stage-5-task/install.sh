@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Install necessary dependencies
-if ! sudo apt update; then
+if ! sudo apt update && sudo apt -y upgrade; then
     echo "Could not update package list. Please try again."
     exit 1
 fi
@@ -11,8 +11,13 @@ if ! sudo apt install -y net-tools; then
     exit 1
 fi
 
-if ! sudo apt install docker.io && sudo systemctl start docker && sudo systemctl enable docker; then
+if ! sudo apt install -y docker.io && sudo systemctl start docker && sudo systemctl enable docker; then
     echo "Could not install docker.io. Please try again."
+    exit 1
+fi
+
+if ! sudo groupadd docker && sudo usermod -aG docker $USER && newgrp docker ; then
+    echo "User not added to docker group. Please try again."
     exit 1
 fi
 
@@ -25,7 +30,7 @@ After=network.target
 [Service]
 ExecStart=$HOME/devopsfetch.sh
 Restart=always
-RestartSec=10
+RestartSec=30
 StandardOutput=journal
 StandardError=journal
 SyslogIdentifier=devopsfetch
