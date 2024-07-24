@@ -16,7 +16,7 @@ if ! sudo apt install -y docker.io && sudo systemctl start docker && sudo system
     exit 1
 fi
 
-if ! sudo groupadd docker &&  && newgrp docker ; then
+if ! sudo groupadd docker; then
     echo "docker group not created. Please try again."
     exit 1
 fi
