@@ -11,6 +11,11 @@ if ! sudo apt install -y net-tools; then
     exit 1
 fi
 
+if ! sudo apt install -y nginx; then
+    echo "Could not install Nginx. Please try again."
+    exit 1
+fi
+
 if ! sudo apt install -y docker.io && sudo systemctl start docker && sudo systemctl enable docker; then
     echo "Could not install and enable Docker. Please try again."
     exit 1
